@@ -33,88 +33,30 @@ $img-width: 45%;
     @media(min-width:1200px)  {@content;}
 }
 
+@function calculateRem($size)
+{
+  @return $size / 16px * 1rem;
+}
 
+@mixin fontSize($size) {
+  font-size: calculateRem($size);
+}
 
-.header {
-  font-family: Arial, Helvetica, sans-serif;
-  &__logo {
-    text-align: center;
-  }
-  &__img {
-    max-width: 350px;
-  }
-  .menu {
-    position: relative;
-    &__list {
-      display: flex;
-      justify-content: center;
-      border-top: 1px solid $light-grey;
-      border-bottom: 1px solid $light-grey;
-      margin-left: auto;
-      margin-right: auto;
-      @include for-phone-only
-      {
-        width: 90%;
-        padding: 15px 0;
-        flex-wrap: wrap;
-      }
-      @include for-tablet-only
-      {
-        width: 80%;
-        padding: 20px 0;
-      }
-      @include for-desktop-only
-      {
-        width: 80%;
-        padding: 20px 0;
-      }
-    }
-    &__links {
-        @include for-phone-only
-        {
-          padding: 5px 0;
-        }
-      position: relative;
-      &:not(:last-child)::after {
-        content: "";
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        right: -3px;
-        margin: auto;
-        height: 15px;
-        width: 1px;
-        background-color: $light-grey;
-      }
-    }
+@import 'header', 'footer', 'about', 'article','collection','contact';
 
-    &__link {
-      padding: 0 25px;
-      color: $dark-grey;
-      &:hover {
-        color: $purple;
-      }
-    }
-  }
+$directions: top, bottom, left, right;
+$layout-margin-size: 10px;
+
+@each $direction in $directions
+{
+  %no-margin-#{$direction} {margin-#{$direction}: 0;}
+  %default-margin-#{$direction} {margin-#{$direction}: $layout-margin-size;}
+  %double-margin-#{$direction} {margin-#{$direction}: $layout-margin-size * 2;}
+  %half-margin-#{$direction} {margin-#{$direction}: $layout-margin-size / 2;}
 }
 
 /*Comentário multiplas linhas*/
-.footer {
-  text-align: center;
-  padding: 20px 0;
-  font-family: Arial, Helvetica, sans-serif;
-  position: relative;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  &__logo {
-    max-width: 100px;
-  }
-  &__txt {
-    margin: auto;
-    font-size: 14px;
-  }
-}
+
 .main {
   display: flex;
   justify-content: center;
@@ -136,7 +78,7 @@ $img-width: 45%;
   }
   &__title {
     text-decoration: none;
-    font-size: 22px;
+    @include fontSize(22px);
     color: $dark-grey;
     letter-spacing: 1.5;
     &:hover {
@@ -147,20 +89,20 @@ $img-width: 45%;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 10px;
-    margin-bottom: 20px;
+    @extend %default-margin-top, %double-margin-bottom;
   }
   &__date {
+    @extend %no-margin-top, %no-margin-bottom, %default-margin-left, %default-margin-right;
     margin: 0 10px;
-    font-size: 12px;
+    @include fontSize(12px);
     font-style: italic;
   }
   &__tag {
-    font-size: 14px;
+    @include fontSize(14px);
     padding: 5px 7px;
     color: $purple;
     border: 1px solid $purple;
-    margin: 0 10px;
+    @extend %no-margin-top, %no-margin-bottom, %default-margin-left, %default-margin-right;
   }
   &__details {
     border: 1px solid $light-grey;
@@ -173,11 +115,12 @@ $img-width: 45%;
     max-width: 650px;
     margin-left: auto;
     margin-right: auto;
-    font-size: 14px;
+    @include fontSize(14px);
+
   }
   &__btn {
     text-decoration: none;
-    font-size: 16px;
+    @include fontSize(16px);
     letter-spacing: 1.5;
     color: $purple;
     background-color: $yellow;
@@ -200,7 +143,7 @@ $img-width: 45%;
     border-right: 1px solid $light-grey;
   }
   &__p {
-    font-size: 14px;
+    @include fontSize(14px);
     color: $dark-grey;
     margin-top: 10px;
     margin-bottom: 10px;
@@ -210,7 +153,7 @@ $img-width: 45%;
   }
   &__a {
     text-decoration: none;
-    font-size: 14px;
+    @include fontSize(14px);
     color: $dark-grey;
     margin-top: 10px;
     margin-bottom: 10px;
@@ -258,7 +201,7 @@ $img-width: 45%;
         padding: 10px;
       }
       &__post-title{
-        font-size: 14px;
+        @include fontSize(14px);
         color: $purple;
         @extend %no-decoration;
         &:hover{
@@ -267,146 +210,10 @@ $img-width: 45%;
 
       }
       &__post-date{
-        font-size: 12px;
+        @include fontSize(12px);
         margin: 5px 0 0 0;
       }
 
   }
 }
 
-.about {
-  max-width: 80%;
-  margin: 0 auto 40px;
-  font-family: Arial, Helvetica, sans-serif;
-  &__title {
-    background-color: $light-grey;
-    text-align: center;
-    padding: 20px;
-  }
-  &__h1 {
-    font-size: 22px;
-    color: $dark-grey;
-    letter-spacing: 1px;
-    margin-top: 5px;
-    margin-bottom: 10px;
-    margin-left: 0;
-    margin-right: 0;
-  }
-  .breadcrumb {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    &__link {
-      font-size: 12px;
-      text-decoration: none;
-      color: $dark-grey;
-      &:hover {
-        text-decoration: underline;
-        color: $purple;
-      }
-    }
-    &__img {
-      width: 10px;
-      margin: 8px;
-    }
-  }
-  &__img {
-    width: 100%;
-    margin-bottom: 20px;
-  }
-  &__intro {
-    font-weight: 100;
-    color: $dark-grey;
-    width: 70%;
-    margin: 30px auto;
-    text-align: center;
-    font-size: 16px;
-  }
-  &__split {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    align-items: center;
-  }
-  &__img-description  {
-    width: $img-width;
-  }
-  &__txt {
-    width: calc(100% - #{$img-width});
-  }
-  &__p {
-    font-size: 14px;
-    padding: 10px 20px;
-  }
-}
-
-.article {
-    width: 80%;
-    margin: 0 auto 40px;
-    font-family: Arial, Helvetica, sans-serif;
-
-    &__title {
-        background-color: $light-grey;
-        text-align: center;
-        padding: 20px;
-    }
-    &__h1 {
-        font-size: 22px;
-        color: $dark-grey;
-        letter-spacing: 1px;
-        margin-top: 5px;
-        margin-bottom: 10px;
-        margin-left: 0;
-        margin-right: 0;
-    }
-
-    .breadcrumb {
-        @include flx(justify-content, center);
-        align-items: center;
-        &__link {
-            font-size: 12px;
-            @extend %no-decoration;
-            color: $dark-grey;
-
-            &:hover {
-                @extend %u-decoration;
-                color: $purple;
-            }
-        }
-        &__img {
-            width: 10px;
-            margin: 8px;
-        }
-    }
-    &__img 
-    {
-        width: 100%;
-        margin-bottom: 20px;
-    }
-    &__details
-    {
-        @include flx(justify-content, center);
-        align-items: center;
-    }
-    &__date
-    {
-        margin: 0 10px;
-        font-size: 12px;
-        font-style: italic;
-    }
-    &__tag
-    {
-        padding: 5px 7px;
-        font-size: 14px;
-        color: $purple;
-        border: 1px solid $purple;
-        margin: 0 10px;
-    }
-    &__content
-    {
-        font-weight: 100;
-        font-size: 14px;
-        color: $dark-grey;
-        margin: 10px 20px;
-    }
-    }
